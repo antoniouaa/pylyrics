@@ -21,7 +21,7 @@ def get_window_info():
 def get_song_info():
     try:
         song = get_window_info()
-        artist, title = song[1:-1].split(" - ")
+        artist, title = song[1:-1].split(" - ", 1)
         return artist, title
     except:
         return "No window found"
@@ -48,8 +48,12 @@ def prepare_artist_title_for_search(artist, title):
     return artist, title
 
 if __name__ == "__main__":
-    artist, title = get_song_info()
-    ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
-    lyrics = get_page(ready_artist, ready_title)
-    print(f"Lyrics for {title} by {artist}")
-    print(lyrics)
+    try:
+        artist, title = get_song_info()
+        ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
+        lyrics = get_page(ready_artist, ready_title)
+        print(f"Lyrics for {title} by {artist}")
+        print(lyrics) 
+    except ValueError:
+        print("Error")
+   
