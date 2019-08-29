@@ -49,11 +49,16 @@ def prepare_artist_title_for_search(artist, title):
     title = re.sub(non_alpha, "", title)
     return artist, title
 
+def clear_screen():
+    command = 'cls'
+    subprocess.run(command, shell=True)
+    
 if __name__ == "__main__":
     artist, title = get_song_info()
     if artist and title:
         ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
         lyrics = get_page(ready_artist, ready_title)
+        clear_screen()
         print(f"Lyrics for {title} by {artist}")
         print(lyrics) 
     else:
