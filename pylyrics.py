@@ -36,11 +36,14 @@ def get_page(band, song_title):
         lyrics = lyric_pane.find("div", class_="")
         return lyrics.text
     except AttributeError:
-        return "Song does not have any lyrics"
+        return None
 
 def prepare_artist_title_for_search(artist, title):
     non_alpha = re.compile(r"\W")
     dollar_sign = re.compile(r"\$")
+    
+    artist = re.sub(r"\$\$", "", artist)
+
     artist = re.sub(dollar_sign, "s", artist)
     title = re.sub(dollar_sign, "s", title)
 
@@ -57,8 +60,11 @@ if __name__ == "__main__":
     if artist and title:
         ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
         lyrics = get_page(ready_artist, ready_title)
-        clear_screen()
-        print(f"Lyrics for {title} by {artist}")
-        print(lyrics) 
+        if lyrics:
+            clear_screen()
+            print(f"Lyrics for {title} by {artist}")
+            print(lyrics)
+        else:
+            print("Song does not have lyrics available")
     else:
        print("No song playing")
