@@ -49,6 +49,10 @@ def prepare_artist_title_for_search(artist, title):
 
     artist = re.sub(non_alpha, "", artist)
     title = re.sub(non_alpha, "", title)
+    
+    if artist=="playboicarti":
+        artist="playboi-carti"
+
     return artist, title
 
 def clear_screen():
