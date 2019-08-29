@@ -4,9 +4,6 @@ Song needs to be playing for the script to detect it.
 
 Clears the console screen before displaying the lyrics.
 
-The script fetches lyrics from [azlyrics](https://www.azlyrics.com/). If the song's lyrics don't exist there you will get the following error message:
-    "Song 
-
 ## Prerequisites
 The script makes use of BeautifulSoup4 and the requests library. To install them:
     
@@ -21,3 +18,13 @@ The script makes use of BeautifulSoup4 and the requests library. To install them
 ## To run
     cd pylyrics
     python pylyrics.py
+
+## Errors
+The script fetches lyrics from [azlyrics](https://www.azlyrics.com/). If the song's lyrics don't exist there you will get the following error message:
+    
+    "Song does not have lyrics available"
+If nothing is playing while the script is running, the following error message will be shown:
+    
+    "No song playing"
+    
+If you spot a song whose lyrics are actually up in the site but get an error message, please raise an issue.
