@@ -4,6 +4,9 @@ Song needs to be playing for the script to detect it.
 
 Clears the console screen before displaying the lyrics.
 
+The script fetches lyrics from [azlyrics](https://www.azlyrics.com/). If the song's lyrics don't exist there you will get the following error message:
+    "Song 
+
 ## Prerequisites
 The script makes use of BeautifulSoup4 and the requests library. To install them:
     
