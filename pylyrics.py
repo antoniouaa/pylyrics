@@ -22,9 +22,11 @@ def get_song_info():
     try:
         song = get_window_info()
         artist, title = song[1:-1].split(" - ", 1)
-        return artist, title
+        reg = re.compile(r"\(.*\)")
+        new_title = re.sub(r"\(.*\)", "", title)
+        return artist, new_title
     except:
-        return "No window found"
+        return None, None
 
 def get_page(band, song_title):
     FULL_URL = f"{BASE_URL}/{band}/{song_title}.html"
@@ -48,12 +50,11 @@ def prepare_artist_title_for_search(artist, title):
     return artist, title
 
 if __name__ == "__main__":
-    try:
-        artist, title = get_song_info()
+    artist, title = get_song_info()
+    if artist and title:
         ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
         lyrics = get_page(ready_artist, ready_title)
         print(f"Lyrics for {title} by {artist}")
         print(lyrics) 
-    except ValueError:
-        print("Error")
-   
+    else:
+       print("No song playing")
