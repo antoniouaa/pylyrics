@@ -2,7 +2,6 @@ import requests
 import os
 import re
 import subprocess, shlex
-from win32gui import FindWindow, GetWindowText
 from bs4 import BeautifulSoup
 
 BASE_URL = f"https://www.azlyrics.com/lyrics/"
@@ -14,8 +13,7 @@ def get_window_info():
 
     string_window_active = "".join(chr(x) for x in windows_active.stdout)
     list_windows = [row for row in string_window_active.split("\r\n") if row != ""]
-    
-    song_info = list_windows[1].split(",")[-1]
+    song_info = list_windows[1].split(",", 9)[-1]
     return song_info 
 
 def get_song_info():
@@ -45,6 +43,7 @@ def prepare_artist_title_for_search(artist, title):
     dollar_sign = re.compile(r"\$")
     artist = re.sub(dollar_sign, "s", artist)
     title = re.sub(dollar_sign, "s", title)
+
     artist = re.sub(non_alpha, "", artist)
     title = re.sub(non_alpha, "", title)
     return artist, title
