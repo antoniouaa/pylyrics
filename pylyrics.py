@@ -41,13 +41,15 @@ def get_page(band, song_title):
 def prepare_artist_title_for_search(artist, title):
     non_alpha = re.compile(r"\W")
     dollar_sign = re.compile(r"\$")
-    
-    artist = re.sub(r"\$\$", "", artist)
+    starting_the = re.compile(r"^the ")
 
+    artist = re.sub(starting_the, "", artist)
+    artist = re.sub(r"\$\$", "", artist)
     artist = re.sub(dollar_sign, "s", artist)
     title = re.sub(dollar_sign, "s", title)
-
     artist = re.sub(non_alpha, "", artist)
+
+    title = re.sub(dollar_sign, "s", title)
     title = re.sub(non_alpha, "", title)
     
     if artist=="playboicarti":
