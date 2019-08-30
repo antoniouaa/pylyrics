@@ -47,12 +47,12 @@ def prepare_artist_title_for_search(artist, title):
     artist = re.sub(starting_the, "", artist)
     artist = re.sub(r"\$\$", "", artist)
     artist = re.sub(dollar_sign, "s", artist)
-    title = re.sub(dollar_sign, "s", title)
     artist = re.sub(non_alpha, "", artist)
-
+    
+    title = re.sub(dollar_sign, "s", title)
     title = re.sub(dollar_sign, "s", title)
     title = re.sub(non_alpha, "", title)
-    
+    # had to hardcode this in because azlyrics is bad 
     if artist=="playboicarti":
         artist="playboi-carti"
 
