@@ -3,7 +3,7 @@ import re
 import subprocess, shlex
 from bs4 import BeautifulSoup
 
-BASE_URL = f"https://www.azlyrics.com/lyrics/"
+BASE_URL = f"https://www.google.com/search?q="
 
 def get_window_info():
     command = 'tasklist /fi "imagename eq spotify.exe" /fo csv /v'
@@ -25,38 +25,28 @@ def get_song_info():
     except:
         return None, None
 
-def get_page(band, song_title):
-    FULL_URL = f"{BASE_URL}/{band}/{song_title}.html"
+def get_page(song):
+    FULL_URL = f"{BASE_URL}/{song}+lyrics"
     page = requests.get(FULL_URL).content
-
     soup = BeautifulSoup(page, "lxml")
     try:
-        lyric_pane = soup.find("div", class_="col-xs-12 col-lg-8 text-center")
-        lyrics = lyric_pane.find("div", class_="")
-        return lyrics.text
-    except AttributeError:
+        lyric_pane = soup.find_all("div", class_="BNeawe tAd8D AP7Wnd")
+        return lyric_pane[2].text
+    except:
         return None
 
 def prepare_artist_title_for_search(artist, title):
-    non_alpha = re.compile(r"\W")
-    dollar_sign = re.compile(r"\$")
-    starting_the = re.compile(r"^the ")
-    project_ = re.compile(r" (P|p)roject$")
+    artist = re.sub(r"\s", "+", artist)
+    title = re.sub(r"\s", "+", title)
+    return f"{artist}+{title}"
 
-    artist = re.sub(project_, "", artist)
-    artist = re.sub(starting_the, "", artist)
-    artist = re.sub(r"\$\$", "", artist)
-    artist = re.sub(dollar_sign, "s", artist)
-    artist = re.sub(non_alpha, "", artist)
-    
-    title = re.sub(dollar_sign, "s", title)
-    title = re.sub(dollar_sign, "s", title)
-    title = re.sub(non_alpha, "", title)
-    # had to hardcode this in because azlyrics is bad 
-    if artist=="playboicarti":
-        artist="playboi-carti"
-
-    return artist, title
+def prepare_lyrics(lyrics):
+    html_tag = re.compile(r"<.*?>")
+    try:
+        lyrics = re.sub(html_tag, "", lyrics)
+        return lyrics
+    except TypeError:
+       return None 
 
 def clear_screen():
     command = 'cls'
@@ -65,12 +55,12 @@ def clear_screen():
 if __name__ == "__main__":
     artist, title = get_song_info()
     if artist and title:
-        ready_artist, ready_title = prepare_artist_title_for_search(artist.lower(), title.lower())
-        lyrics = get_page(ready_artist, ready_title)
+        ready_song = prepare_artist_title_for_search(artist.lower(), title.lower())
+        lyrics = prepare_lyrics(get_page(ready_song))
         if lyrics:
             clear_screen()
-            print(f"Lyrics for {title} by {artist}")
-            print(lyrics[1:-1])
+            print(f"Lyrics for {title} by {artist}\n")
+            print(lyrics)
         else:
             print("Song does not have lyrics available")
     else:
