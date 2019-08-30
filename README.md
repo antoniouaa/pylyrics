@@ -1,6 +1,6 @@
 # pylyrics
 Python script that detects the song Spotify is currently playing and retrieves its lyrics.
-Song needs to be playing for the script to detect it.
+Song needs to be playing for the script to detect it. Paused songs are not detected.
 
 Clears the console screen before displaying the lyrics.
 
