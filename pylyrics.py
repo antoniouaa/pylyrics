@@ -1,5 +1,4 @@
 import requests
-import os
 import re
 import subprocess, shlex
 from bs4 import BeautifulSoup
