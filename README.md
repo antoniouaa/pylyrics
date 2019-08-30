@@ -28,3 +28,10 @@ If nothing is playing while the script is running, the following error message w
     "No song playing"
     
 If you spot a song whose lyrics are actually up in the site but get an error message, please raise an issue.
+
+## Why
+The only reason this script exists is because Spotify had a built-in function that fetched you the lyrics for any song you were listening to, via MusixMatch.
+
+ I liked it. They got rid of it.
+
+Now here we are wrestling with Python all because I wanna know what the hell mumblerappers sing about.
