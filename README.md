@@ -20,7 +20,7 @@ The script makes use of BeautifulSoup4 and the requests library. To install them
     python pylyrics.py
 
 ## Errors
-The script fetches lyrics from [azlyrics](https://www.azlyrics.com/). If the song's lyrics don't exist there you will get the following error message:
+The script fetches lyrics from Google's search results. If even Google doesn't carry the lyrics, and God help us if they don't, you'll see this error message:
     
     "Song does not have lyrics available"
 If nothing is playing while the script is running, the following error message will be shown:
