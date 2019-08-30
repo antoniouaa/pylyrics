@@ -69,7 +69,7 @@ if __name__ == "__main__":
         if lyrics:
             clear_screen()
             print(f"Lyrics for {title} by {artist}")
-            print(lyrics)
+            print(lyrics[1:])
         else:
             print("Song does not have lyrics available")
     else:
