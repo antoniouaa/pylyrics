@@ -60,19 +60,18 @@ if __name__ == "__main__":
     fetch_time = fetch_timer_end - fetch_timer_start
     if artist and title:
         ready_song = prepare_artist_title_for_search(artist.lower(), title.lower())
-        lyrics = prepare_lyrics(get_page(ready_song))
+        lyrics = get_page(ready_song)
         if lyrics:
+            prepared_lyrics = prepare_lyrics(lyrics)
             clear_screen()
             print(f"Lyrics for {title} by {artist}\n")
-            print(lyrics)
+            print(prepared_lyrics)
             total_timer_end = default_timer()
-        else:
+            print(f"\n    Query took {fetch_time:.5f} seconds to complete.")
+        try:
+            display_timer = total_timer_end - fetch_timer_end
+            print(f"    Processing and displaying took {display_timer:.5f} seconds to complete.")
+        except Exception as e:
             print("Song does not have lyrics available")
     else:
         print("No song playing")
-    print(f"\n    Query took {fetch_time:.5f} seconds to complete.")
-    try:
-        display_timer = total_timer_end - fetch_timer_end
-        print(f"    Processing and displaying took {display_timer:.5f} seconds to complete.")
-    except Exception as e:
-        print(e)
