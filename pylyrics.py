@@ -1,6 +1,7 @@
 import requests
 import re
 import subprocess, shlex
+from timeit import default_timer
 from bs4 import BeautifulSoup
 
 BASE_URL = f"https://www.google.com/search?q="
@@ -46,7 +47,8 @@ def prepare_lyrics(lyrics):
     html_tag = re.compile(r"<.*?>")
     try:
         lyrics = re.sub(html_tag, "", lyrics)
-        return lyrics
+        if len(lyrics) > 20:
+            return lyrics
     except TypeError:
        return None 
 
@@ -55,6 +57,7 @@ def clear_screen():
     subprocess.run(command, shell=True)
     
 if __name__ == "__main__":
+    start = default_timer()
     artist, title = get_song_info()
     if artist and title:
         ready_song = prepare_artist_title_for_search(artist.lower(), title.lower())
@@ -67,3 +70,5 @@ if __name__ == "__main__":
             print("Song does not have lyrics available")
     else:
        print("No song playing")
+    end = default_timer()
+    print(f"\nQuery took {(end-start):.5f} seconds to complete.")
