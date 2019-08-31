@@ -44,21 +44,20 @@ def prepare_artist_title_for_search(artist, title):
     return f"{artist}+{title}"
 
 def prepare_lyrics(lyrics):
-    html_tag = re.compile(r"<.*?>")
-    try:
-        lyrics = re.sub(html_tag, "", lyrics)
-        if len(lyrics) > 20:
-            return lyrics
-    except TypeError:
-       return None 
+    if len(lyrics) > 20:
+        return lyrics
+    return None 
 
 def clear_screen():
     command = 'cls'
     subprocess.run(command, shell=True)
     
 if __name__ == "__main__":
-    start = default_timer()
+    fetch_timer_start = default_timer()
     artist, title = get_song_info()
+    fetch_timer_end = default_timer()
+    display_timer = None
+    fetch_time = fetch_timer_end - fetch_timer_start
     if artist and title:
         ready_song = prepare_artist_title_for_search(artist.lower(), title.lower())
         lyrics = prepare_lyrics(get_page(ready_song))
@@ -66,9 +65,14 @@ if __name__ == "__main__":
             clear_screen()
             print(f"Lyrics for {title} by {artist}\n")
             print(lyrics)
+            total_timer_end = default_timer()
         else:
             print("Song does not have lyrics available")
     else:
-       print("No song playing")
-    end = default_timer()
-    print(f"\nQuery took {(end-start):.5f} seconds to complete.")
+        print("No song playing")
+    print(f"\n    Query took {fetch_time:.5f} seconds to complete.")
+    try:
+        display_timer = total_timer_end - fetch_timer_end
+        print(f"    Processing and displaying took {display_timer:.5f} seconds to complete.")
+    except Exception as e:
+        print(e)
