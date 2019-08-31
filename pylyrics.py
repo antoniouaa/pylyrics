@@ -36,7 +36,9 @@ def get_page(song):
         return None
 
 def prepare_artist_title_for_search(artist, title):
+    remix_tag = re.compile(r"(\(|-).*(R|r)emix.*")
     artist = re.sub(r"\s", "+", artist)
+    title = re.sub(remix_tag, "", title)
     title = re.sub(r"\s", "+", title)
     return f"{artist}+{title}"
 
