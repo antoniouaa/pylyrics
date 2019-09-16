@@ -1,15 +1,22 @@
 import requests
 import re
 import subprocess, shlex
+import os
+from sys import platform, exit
 from timeit import default_timer
 from bs4 import BeautifulSoup
 
 BASE_URL = f"https://www.google.com/search?q="
 
 def get_window_info():
-    command = 'tasklist /fi "imagename eq spotify.exe" /fo csv /v'
-    args = shlex.split(command)
-    windows_active = subprocess.run(args, capture_output=True)
+    try: 
+        if platform == "win32":
+            command = 'tasklist /fi "imagename eq spotify.exe" /fo csv /v'
+        args = shlex.split(command)
+        windows_active = subprocess.run(args, capture_output=True)
+    except NameError as name_e:
+        print(f"Something went wrong\n{repr(name_e)}")
+        os._exit(0)
 
     string_window_active = "".join(chr(x) for x in windows_active.stdout)
     list_windows = [row for row in string_window_active.split("\r\n") if row != ""]
@@ -21,7 +28,7 @@ def get_song_info():
         song = get_window_info()
         artist, title = song[1:-1].split(" - ", 1)
         reg = re.compile(r"\(.*\)")
-        new_title = re.sub(r"\(.*\)", "", title)
+        new_title = re.sub(r"\(.*(mix|ft.).*\)", "", title)
         return artist, new_title
     except:
         return None, None
