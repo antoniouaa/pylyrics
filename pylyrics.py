@@ -80,7 +80,7 @@ if __name__ == "__main__":
             prepared_lyrics = prepare_lyrics(lyrics)
             fetch_time = fetch_timer_end - fetch_timer_start
             clear_screen()
-            print(f"Lyrics for {title} by {artist}\n")
+            print(f"Lyrics for {title.title()} by {artist.title()}\n")
             print(prepared_lyrics)
             total_timer_end = default_timer()
             print(f"\n    Query took {fetch_time:.5f} seconds to complete.")
