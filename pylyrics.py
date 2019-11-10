@@ -1,8 +1,8 @@
 import requests
 import re
 import subprocess, shlex
-import os
-from sys import platform, exit
+import argparse
+import os, sys
 from timeit import default_timer
 from bs4 import BeautifulSoup
 
@@ -10,9 +10,9 @@ BASE_URL = f"https://www.google.com/search?q="
 
 def get_window_info():
     try: 
-        if platform == "win32":
+        if sys.platform == "win32":
             command = 'tasklist /fi "imagename eq spotify.exe" /fo csv /v'
-        elif platform == "linux2":
+        elif sys.platform == "linux2":
             command = 'ps -C spotify'
         args = shlex.split(command)
         windows_active = subprocess.run(args, capture_output=True)
@@ -62,16 +62,23 @@ def clear_screen():
     subprocess.run(command, shell=True)
     
 if __name__ == "__main__":
-    fetch_timer_start = default_timer()
-    artist, title = get_song_info()
-    fetch_timer_end = default_timer()
+    parser = argparse.ArgumentParser(description="Fetch lyrics of songs from online")
+    parser.add_argument("-s", "--song", type=str, help="the song title")
+    parser.add_argument("-a", "--artist", type=str, help="the artist's name")
+    args = parser.parse_args()
+    if not None in vars(args).values():
+        artist, title = vars(args)["artist"], vars(args)["song"]
+    else:
+        artist, title = get_song_info()
     display_timer = None
-    fetch_time = fetch_timer_end - fetch_timer_start
     if artist and title:
+        fetch_timer_start = default_timer()
         ready_song = prepare_artist_title_for_search(artist.lower(), title.lower())
         lyrics = get_page(ready_song)
+        fetch_timer_end = default_timer()
         if lyrics:
             prepared_lyrics = prepare_lyrics(lyrics)
+            fetch_time = fetch_timer_end - fetch_timer_start
             clear_screen()
             print(f"Lyrics for {title} by {artist}\n")
             print(prepared_lyrics)
