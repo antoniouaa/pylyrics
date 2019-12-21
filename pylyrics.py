@@ -88,6 +88,6 @@ if __name__ == "__main__":
             display_timer = total_timer_end - fetch_timer_end
             print(f"    Processing and displaying took {display_timer:.5f} seconds to complete.")
         except Exception as e:
-            print("Song does not have lyrics available")
+            print(f"Song {title} by {artist} does not have lyrics available")
     else:
         print("No song playing")
