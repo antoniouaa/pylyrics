@@ -13,7 +13,7 @@ def get_window_info():
         if sys.platform == "win32":
             command = 'tasklist /fi "imagename eq spotify.exe" /fo csv /v'
         elif sys.platform == "linux2":
-            command = 'ps -C spotify'
+            command = 'tasklist.exe /fi "imagename eq spotify.exe" /fo csv /v'
         args = shlex.split(command)
         windows_active = subprocess.run(args, capture_output=True)
     except NameError as name_e:
