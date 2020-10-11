@@ -1,0 +1,19 @@
+{% extends "base.j2" %}
+
+{% block title %}
+Artist - pylyrics
+{% endblock %}
+
+{% block content %}
+<h2>This is the Artist page</h2>
+
+{% if artist_name %}
+    The artist you searched for is {{artist_name.title()}}!
+{% else %}
+    You didn't search for an artist.
+{% endif %}
+
+
+
+{% endblock %}
+ 

@@ -1,5 +1,9 @@
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, url_for
 from flask_bootstrap import Bootstrap
+
+from tests.sample import lyrics as sample_lyrics
+
+import pylyrics
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -12,28 +16,21 @@ def index():
 
 @app.route("/home")
 def home():
-    return render_template("home.j2")
+    # artist, song, raw_lyrics = pylyrics.get_lyrics()
+    artist, song, raw_lyrics = "Bon Jovi", "You give love a bad name", sample_lyrics
+    if raw_lyrics and artist and song:
+        lyrics = raw_lyrics.split("\n")
+        return render_template("home.j2", artist=artist, song=song, lyrics=lyrics)
+    return render_template("nolyrics.j2")
 
 
-@app.route("/artist")
-@app.route("/artist/<artist>")
-def artist(artist=None):
-    if artist is None:
-        return redirect("/home")
-    return render_template("result.j2", name="artist", result=artist)
+@app.route("/artist/")
+@app.route("/artist/<artist_name>")
+def artist(artist_name=None):
+    return render_template("artist.j2", artist_name=artist_name)
 
 
-@app.route("/song")
+@app.route("/song/")
 @app.route("/song/<song_name>")
 def song(song_name=None):
-    if song_name is None:
-        return redirect("/home")
-    return render_template("result.j2", name="song", result=song_name)
-
-
-@app.route("/album")
-@app.route("/album/<album_title>")
-def album(album_title=None):
-    if album_title is None:
-        return redirect("/home")
-    return render_template("result.j2", name="album", result=album_title)
+    return render_template("song.j2", song_name=song_name)

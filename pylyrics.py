@@ -8,7 +8,10 @@ import sys
 from timeit import default_timer
 from bs4 import BeautifulSoup
 
-BASE_URL = f"https://www.google.com/search?q="
+BASE_URL = "https://www.google.com/search?q="
+GOOGLE_API = "https://www.googleapis.com/customsearch/v1?"
+GOOGLE_KEY = "AIzaSyAgHeURVOYHst6Oi4lLmfZVpnqILhav01I"
+GOOGLE_ENGINE = "d231af14f5341aad8"
 
 
 def get_window_info():
@@ -21,7 +24,7 @@ def get_window_info():
         windows_active = subprocess.run(args, capture_output=True)
     except NameError as name_e:
         print(f"Something went wrong\n{repr(name_e)}")
-        os._exit(0)
+        sys.exit()
 
     string_window_active = "".join(chr(x) for x in windows_active.stdout)
     list_windows = [
@@ -43,10 +46,14 @@ def get_song_info():
 
 def get_page(song):
     FULL_URL = f"{BASE_URL}/{song}+lyrics"
+    # FULL_URL = f"{GOOGLE_API}key={GOOGLE_KEY}&cx={GOOGLE_ENGINE}&q={song}+lyrics"
+    print(FULL_URL)
     page = requests.get(FULL_URL).content
     soup = BeautifulSoup(page, "lxml")
     try:
         lyric_pane = soup.find_all("div", class_="BNeawe tAd8D AP7Wnd")
+        # lyric_pane = soup.find_all("span", class_="YS01Ge")
+        # print(soup)
         return lyric_pane[2].text
     except:
         return None
@@ -69,6 +76,14 @@ def prepare_lyrics(lyrics):
 def clear_screen():
     command = 'cls'
     subprocess.run(command, shell=True)
+
+
+def get_lyrics():
+    artist, song = get_song_info()
+    song_query_term = prepare_artist_title_for_search(artist, song)
+    raw_lyrics = get_page(song_query_term)
+    ready_lyrics = prepare_lyrics(raw_lyrics)
+    return artist, song, ready_lyrics
 
 
 if __name__ == "__main__":

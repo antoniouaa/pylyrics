@@ -1,0 +1,36 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block navbar %}
+<nav class="nav">
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+        <a class="nav-link" href={{url_for('home')}}>pylyrics</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href={{url_for('home')}}>Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href={{url_for('artist', artist_name=artist)}}>Artist</a>
+        </li>
+        <li class="nav-item">
+            {% if song_name %}
+                <a class="nav-link" href={{url_for('song', song_name="")}}>Song</a>
+            {% else %}
+                <a class="nav-link" href={{url_for('song', song_name=song)}}>Song</a>
+            {% endif %}
+        </li>
+        <li class="nav-item">  
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

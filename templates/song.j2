@@ -1,0 +1,18 @@
+{% extends "base.j2" %}
+
+{% block title %}
+Song - pylyrics
+{% endblock %}
+
+{% block content %}
+<h2>This is the Song page</h2>
+
+{% if sone_name %}
+    The song you searched for is {{song_name.title()}}!
+{% else %}
+    You didn't search for a song.
+{% endif %}
+
+
+{% endblock %}
+ 
